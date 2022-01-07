@@ -1,4 +1,5 @@
 #pragma once
+#define PLAY_USING_GAMEOBJECT_MANAGER
 #include "Play.h"
 using namespace std;
 
@@ -14,7 +15,7 @@ enum SquareState {
 	Eight,
 	Hidden,
 	Flag,
-	Mine
+	Mine,
 };
 
 class Square   {
@@ -23,12 +24,16 @@ private:
 	SquareState state;
 	bool mine;
 	int neighborCount = 0;				// how many mines does the neighbors have?
-	int _col;
-	int _row;
+	int cX;
+	int cY;
 public:
-	Square(int col, int row);
+	Square();
 	void Draw();
-	void SetPos(int cordX, int cordY);
+	void SetX(int);
+	void SetY(int);
+	int GetX();
+	int GetY();
+	void SetPos(int,int);
 	void SetState(SquareState s);
 	void PlantMine();
 	bool HasMine();

@@ -1,30 +1,15 @@
+#define PLAY_USING_GAMEOBJECT_MANAGER
 #include "Grid.h"
-#include "Square.h"
 
-Grid::Grid(int col, int row) {
+Grid::Grid() {
 	numMines = 40;
 	clearSquares = 0;
-
-	this->minefield = new Square * [row];
-	for (int r = 0; r < row; ++r)
-	{
-		this->minefield[r] = new Square[col];
-	}
-
-	for (int x = 0; x < row; ++x)
-	{
-		for (int y = 0; y < col; ++y)
-		{
-			this->minefield[x][y] = new Square(y, x);
-		}
-	}
-	// 
-	//Set the pos for all sqaures
-	for (int i = 0; i < gridWidth; i++)
-	{
-		for (int j = 0; j < gridHight; j++)
-		{
-			minefield[j][i].SetPos(i, j);
+	for (int x = 0; x < gridWidth; x++) {
+		for (int y = 0; y < gridHeight; y++) {
+			minefield[y][x].SetX(x);
+			minefield[y][x].SetY(y);
+			minefield[y][x].SetPos(x,y);
+			minefield[y][x].SetState(SquareState::Hidden);
 		}
 	}
 }
@@ -36,7 +21,7 @@ Grid::~Grid() {
 void Grid::Draw() {
 	for (int x = 0; x < gridWidth; x++)
 	{
-		for (int y = 0; y < gridHight; y++)
+		for (int y = 0; y < gridHeight; y++)
 		{
 			minefield[y][x].Draw();
 		}
