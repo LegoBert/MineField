@@ -16,5 +16,6 @@ public:
 	Grid();
 	~Grid();
 	void Draw();
+	void PlantMines();
 	void ChkAdjacent(int cordX, int cordY);
 };

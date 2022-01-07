@@ -1,6 +1,5 @@
 #define PLAY_USING_GAMEOBJECT_MANAGER
 #include "Square.h"
-#include <assert.h>
 
 Square::Square(){
 	pos = { 0,0 };
@@ -12,7 +11,8 @@ Square::Square(){
 }
 
 void Square::Draw() {
-	if (state == SquareState::Hidden) Play::DrawCircle(pos, 5, Play::cBlue);
+	if (state == SquareState::Hidden) Play::DrawRect(pos, { pos.x + 14, pos.y + 14 }, Play::cGreen, 1);
+	if (mine) Play::DrawRect(pos, { pos.x + 14, pos.y + 14 }, Play::cRed, 1);
 	/*float scale = 2.5;
 	if(state == SquareState::Zero) Play::DrawSpriteRotated("zero", pos, 0, 0, scale, 1.0f);
 	if (state == SquareState::One) Play::DrawSpriteRotated("one", pos, 0, 0, scale, 1.0f);
@@ -37,7 +37,7 @@ int Square::GetY() { return cY; }
 
 void Square::SetPos(int x, int y) {
 	int offset = 16;
-	pos = { x * offset,y * offset };
+	pos = { x * offset+10,y * offset +10};
 }
 
 void Square::SetState(SquareState s) {
@@ -45,7 +45,6 @@ void Square::SetState(SquareState s) {
 }
 
 void Square::PlantMine() { 
-	assert(!mine);
 	mine = true; 
 }
 

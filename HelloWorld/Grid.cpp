@@ -2,7 +2,7 @@
 #include "Grid.h"
 
 Grid::Grid() {
-	numMines = 40;
+	numMines = 50;
 	clearSquares = 0;
 	for (int x = 0; x < gridWidth; x++) {
 		for (int y = 0; y < gridHeight; y++) {
@@ -26,6 +26,19 @@ void Grid::Draw() {
 			minefield[y][x].Draw();
 		}
 	}
+}
+
+void Grid::PlantMines() {
+	int minesLeft = numMines;
+	while (minesLeft > 0) {
+		int x = Play::RandomRollRange(0, gridWidth-1);
+		int y = Play::RandomRollRange(0, gridHeight-1);
+		if (minefield[y][x].HasMine()==false) {
+			minefield[y][x].PlantMine();
+			minesLeft--;
+		}
+	}
+		
 }
 
 void Grid::ChkAdjacent(int cordX, int cordY) {
