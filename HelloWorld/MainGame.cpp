@@ -3,17 +3,18 @@
 #include "Play.h"
 #include "Grid.h"
 
-int DISPLAY_WIDTH = 640;
-int DISPLAY_HEIGHT = 360;
-int DISPLAY_SCALE = 2;
-
 Grid grid;
+
+int DISPLAY_WIDTH = grid.GetGridWidth()*14;
+int DISPLAY_HEIGHT = grid.GetGridHeight() * 14;
+int DISPLAY_SCALE = 2.5;
 
 // The entry point for a PlayBuffer program
 void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 {
-	Play::CreateManager( DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE );
+	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
 	grid.PlantMines();
+	grid.AssignNumbers();
 }
 
 // Called by PlayBuffer every frame (60 times a second!)
@@ -21,6 +22,7 @@ bool MainGameUpdate( float elapsedTime )
 {
 	Play::ClearDrawingBuffer( Play::cBlack );
 	grid.Draw();
+	grid.HoverSquare();
 
 	Play::PresentDrawingBuffer();
 	return Play::KeyDown( VK_ESCAPE );

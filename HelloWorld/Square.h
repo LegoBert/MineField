@@ -33,8 +33,12 @@ public:
 	void SetY(int);
 	int GetX();
 	int GetY();
+	void SetNeighborCount(int n);
+	int GetNeighborCount();
 	void SetPos(int,int);
+	Point2D GetPos();
 	void SetState(SquareState s);
 	void PlantMine();
 	bool HasMine();
+	void Hover();
 };

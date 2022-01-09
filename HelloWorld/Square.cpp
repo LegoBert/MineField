@@ -11,9 +11,16 @@ Square::Square(){
 }
 
 void Square::Draw() {
-	if (state == SquareState::Hidden) Play::DrawRect(pos, { pos.x + 14, pos.y + 14 }, Play::cGreen, 1);
-	if (mine) Play::DrawRect(pos, { pos.x + 14, pos.y + 14 }, Play::cRed, 1);
-	/*float scale = 2.5;
+	if (neighborCount == 0) SetState(SquareState::Zero);
+	if (neighborCount == 1) SetState(SquareState::One);
+	if (neighborCount == 2) SetState(SquareState::Two);
+	if (neighborCount == 3) SetState(SquareState::Three);
+	if (neighborCount == 4) SetState(SquareState::Four);
+	if (neighborCount == 5) SetState(SquareState::Five);
+	if (neighborCount == 6) SetState(SquareState::Six);
+	if (neighborCount == 7) SetState(SquareState::Seven);
+	if (neighborCount == 8) SetState(SquareState::Eight);
+	float scale = 2;
 	if(state == SquareState::Zero) Play::DrawSpriteRotated("zero", pos, 0, 0, scale, 1.0f);
 	if (state == SquareState::One) Play::DrawSpriteRotated("one", pos, 0, 0, scale, 1.0f);
 	if (state == SquareState::Two) Play::DrawSpriteRotated("two", pos, 0, 0, scale, 1.0f);
@@ -25,29 +32,34 @@ void Square::Draw() {
 	if (state == SquareState::Eight) Play::DrawSpriteRotated("eight", pos, 0, 0, scale, 1.0f);
 	if (state == SquareState::Hidden) Play::DrawSpriteRotated("hidden", pos, 0, 0, scale, 1.0f);
 	if (state == SquareState::Flag) Play::DrawSpriteRotated("flag", pos, 0, 0, scale, 1.0f);
-	if (state == SquareState::Mine) Play::DrawSpriteRotated("mine", pos, 0, 0, scale, 1.0f);*/
+	if (state == SquareState::Hidden) Play::DrawSpriteRotated("hidden", pos, 0, 0, scale, 1.0f);
+	if (state == SquareState::Flag) Play::DrawSpriteRotated("flag", pos, 0, 0, scale, 1.0f);
+	if (mine) Play::DrawSpriteRotated("mine", pos, 0, 0, scale, 1.0f);
 	
 }
 
 void Square::SetX(int x) { cX = x; }
 void Square::SetY(int y) { cY = y; }
+
 int Square::GetX() { return cX; }
 int Square::GetY() { return cY; }
 
+void Square::SetNeighborCount(int n) { neighborCount = n; }
+int Square::GetNeighborCount() { return neighborCount; }
 
 void Square::SetPos(int x, int y) {
-	int offset = 16;
-	pos = { x * offset+10,y * offset +10};
+	int offset = 14;
+	pos = { x * offset,y * offset};
 }
+Point2D Square::GetPos() { return pos; }
 
-void Square::SetState(SquareState s) {
-	state = s;
-}
+void Square::SetState(SquareState s) { state = s; }
 
-void Square::PlantMine() { 
-	mine = true; 
-}
+void Square::PlantMine() { mine = true; }
+bool Square::HasMine()  { return mine; }
 
-bool Square::HasMine()  {
-	return mine;
+void Square::Hover() {
+	if ((pos.x < Play::GetMousePos().x && Play::GetMousePos().x < pos.x + 15) && (pos.y < Play::GetMousePos().y&& Play::GetMousePos().y < pos.y + 15)) {
+		
+	}
 }

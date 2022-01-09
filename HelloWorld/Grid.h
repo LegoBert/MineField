@@ -10,12 +10,16 @@ private:
 	static const int gridWidth = 18;
 	static const int gridHeight = 18;
 	Square minefield[gridHeight][gridWidth];
-public:
 	int numMines;
 	int clearSquares;
+public:
 	Grid();
 	~Grid();
+	int GetGridWidth();
+	int GetGridHeight();
 	void Draw();
 	void PlantMines();
-	void ChkAdjacent(int cordX, int cordY);
+	int ChkAdjacent(int cordX, int cordY);
+	void HoverSquare();
+	void AssignNumbers();
 };
