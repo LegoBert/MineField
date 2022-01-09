@@ -38,7 +38,10 @@ public:
 	void SetPos(int,int);
 	Point2D GetPos();
 	void SetState(SquareState s);
+	SquareState GetState();
 	void PlantMine();
 	bool HasMine();
+
 	void Hover();
+	void UpdateSquare();
 };

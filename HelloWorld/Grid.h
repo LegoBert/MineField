@@ -12,14 +12,16 @@ private:
 	Square minefield[gridHeight][gridWidth];
 	int numMines;
 	int clearSquares;
+	bool firstClick;
 public:
 	Grid();
 	~Grid();
+	void Draw();
 	int GetGridWidth();
 	int GetGridHeight();
-	void Draw();
 	void PlantMines();
+	void AssignNumbers();
 	int ChkAdjacent(int cordX, int cordY);
 	void HoverSquare();
-	void AssignNumbers();
+	void ClearSquare();
 };

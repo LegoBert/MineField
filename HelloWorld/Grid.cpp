@@ -4,6 +4,7 @@
 Grid::Grid() {
 	numMines = 50;
 	clearSquares = 0;
+	firstClick = true;
 	for (int x = 0; x < gridWidth; x++) {
 		for (int y = 0; y < gridHeight; y++) {
 			minefield[y][x].SetX(x);
@@ -40,6 +41,15 @@ void Grid::PlantMines() {
 			minesLeft--;
 		}
 	}
+	AssignNumbers();
+}
+
+void Grid::AssignNumbers() {
+	for (int x = 0; x < gridWidth; x++) {
+		for (int y = 0; y < gridHeight; y++) {
+			ChkAdjacent(x, y);
+		}
+	}
 }
 
 int Grid::ChkAdjacent(int cordX, int cordY) {
@@ -61,13 +71,24 @@ void Grid::HoverSquare() {
 	}
 }
 
-void Grid::AssignNumbers() {
-	for (int x = 0; x < gridWidth; x++) {
-		for (int y = 0; y < gridHeight; y++) {
-			ChkAdjacent(x, y);
+void Grid::ClearSquare() {
+	for (int x = 0; x < gridWidth; x++)
+	{
+		for (int y = 0; y < gridHeight; y++)
+		{
+			if (minefield[y][x].GetState() == SquareState::Zero) {
+				for (int cordX = x  - 1; cordX <= x + 1; cordX++) {
+					for (int cordY = y - 1; cordY <= y + 1; cordY++) {
+						if(!(x == -1 || y == -1 || x == gridWidth || y == gridHeight)) {
+							minefield[cordY][cordX].UpdateSquare();
+						}
+					}
+				}
+			}
 		}
 	}
 }
+
 
 
 
