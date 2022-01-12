@@ -7,9 +7,13 @@ using namespace std;
 
 class Grid{
 private:
-	static const int gridWidth = 18;
+	/*static const int gridWidth = 18;
 	static const int gridHeight = 18;
-	Square minefield[gridHeight][gridWidth];
+	Square minefield[gridHeight][gridWidth];*/
+	int gridWidth = 18;
+	int gridHeight = 18;
+	Square** minefield;
+
 	int numMines;
 	int clearSquares;
 	bool firstClick;

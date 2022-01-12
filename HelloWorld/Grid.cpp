@@ -5,6 +5,12 @@ Grid::Grid() {
 	numMines = 50;
 	clearSquares = 0;
 	firstClick = true;
+
+	minefield = new Square * [gridHeight];
+	for (int i = 0; i < gridHeight; ++i) {
+		minefield[i] = new Square[gridWidth];
+	}
+
 	for (int x = 0; x < gridWidth; x++) {
 		for (int y = 0; y < gridHeight; y++) {
 			minefield[y][x].SetX(x);
@@ -59,7 +65,9 @@ int Grid::ChkAdjacent(int cordX, int cordY) {
 	int mineCount = 0;
 	for (int x = cordX - 1; x <= cordX + 1; x++) {
 		for (int y = cordY - 1; y <= cordY + 1; y++) {
-			if (minefield[y][x].HasMine() && !(x < 0 || y < 0 || x >= gridWidth || y >= gridHeight)) mineCount++;
+			if (!(x < 0 || y < 0 || x >= gridWidth || y >= gridHeight)) {
+				if (minefield[y][x].HasMine()) mineCount++;
+			}
 		}
 	}
 	minefield[cordY][cordX].SetNeighborCount(mineCount);
