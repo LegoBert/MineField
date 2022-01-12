@@ -21,7 +21,7 @@ public:
 	int GetGridHeight();
 	void PlantMines();
 	void AssignNumbers();
-	int ChkAdjacent(int cordX, int cordY);
-	void HoverSquare();
+	int ChkAdjacent(int, int);
+	void Hover();
 	void ClearSquare();
 };

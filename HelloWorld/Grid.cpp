@@ -15,7 +15,7 @@ Grid::Grid() {
 }
 
 Grid::~Grid() {
-
+	delete[] minefield;
 }
 
 void Grid::Draw() {
@@ -31,19 +31,21 @@ void Grid::Draw() {
 int Grid::GetGridWidth() { return gridWidth; }
 int Grid::GetGridHeight() { return gridHeight; }
 
+// Function for planting mines
 void Grid::PlantMines() {
 	int minesLeft = numMines;
 	while (minesLeft > 0) {
 		int x = Play::RandomRollRange(0, gridWidth-1);
 		int y = Play::RandomRollRange(0, gridHeight-1);
-		if (minefield[y][x].HasMine()==false) {
-			minefield[y][x].PlantMine();
+		if (minefield[y][x].HasMine() == false) {
+			minefield[y][x].SetMine(true);
 			minesLeft--;
 		}
 	}
-	AssignNumbers();
+	AssignNumbers();	// Adding the adjacent mine count while I'm at it
 }
 
+// This function goes through the array and adds the number adjacent mine
 void Grid::AssignNumbers() {
 	for (int x = 0; x < gridWidth; x++) {
 		for (int y = 0; y < gridHeight; y++) {
@@ -52,18 +54,20 @@ void Grid::AssignNumbers() {
 	}
 }
 
+// This function counts and adds the adjacent number of mines
 int Grid::ChkAdjacent(int cordX, int cordY) {
 	int mineCount = 0;
 	for (int x = cordX - 1; x <= cordX + 1; x++) {
 		for (int y = cordY - 1; y <= cordY + 1; y++) {
-			if (minefield[y][x].HasMine() && !(x == -1 || y ==-1 || x == gridWidth || y == gridHeight)) mineCount++;
+			if (minefield[y][x].HasMine() && !(x < 0 || y < 0 || x >= gridWidth || y >= gridHeight)) mineCount++;
 		}
 	}
 	minefield[cordY][cordX].SetNeighborCount(mineCount);
 	return mineCount;
 }
 
-void Grid::HoverSquare() {
+// This function checks which square the mouse is over
+void Grid::Hover() {
 	for (int x = 0; x < gridWidth; x++) {
 		for (int y = 0; y < gridHeight; y++) {
 			minefield[y][x].Hover();
@@ -71,16 +75,18 @@ void Grid::HoverSquare() {
 	}
 }
 
+// This function clears the squares around a clear square
 void Grid::ClearSquare() {
 	for (int x = 0; x < gridWidth; x++)
 	{
 		for (int y = 0; y < gridHeight; y++)
 		{
-			if (minefield[y][x].GetState() == SquareState::Zero) {
+			Square mine = minefield[y][x];
+			if (mine.GetNeighborCount() == 0 && !mine.GetHidden()) {
 				for (int cordX = x  - 1; cordX <= x + 1; cordX++) {
 					for (int cordY = y - 1; cordY <= y + 1; cordY++) {
-						if(!(x == -1 || y == -1 || x == gridWidth || y == gridHeight)) {
-							minefield[cordY][cordX].UpdateSquare();
+						if(!(cordX < 0 || cordY < 0 || cordX >= gridWidth || cordY >= gridHeight)) {
+							minefield[cordY][cordX].SetHidden(false);
 						}
 					}
 				}

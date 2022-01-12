@@ -4,7 +4,8 @@
 Square::Square(){
 	pos = { 0,0 };
 	mine = false;
-	state = SquareState::Hidden;
+	flagged = false;
+	hidden = true;
 	cX = 0;
 	cY = 0;
 	neighborCount = 0;
@@ -12,20 +13,27 @@ Square::Square(){
 
 void Square::Draw() {
 	float scale = 2;
-	if(state == SquareState::Zero) Play::DrawSpriteRotated("zero", pos, 0, 0, scale, 1.0f);
-	else if (state == SquareState::One) Play::DrawSpriteRotated("one", pos, 0, 0, scale, 1.0f);
-	else if (state == SquareState::Two) Play::DrawSpriteRotated("two", pos, 0, 0, scale, 1.0f);
-	else if (state == SquareState::Three) Play::DrawSpriteRotated("three", pos, 0, 0, scale, 1.0f);
-	else if (state == SquareState::Four) Play::DrawSpriteRotated("four", pos, 0, 0, scale, 1.0f);
-	else if (state == SquareState::Flag) Play::DrawSpriteRotated("flag", pos, 0, 0, scale, 1.0f);
-	else if (state == SquareState::Mine) Play::DrawSpriteRotated("mine", pos, 0, 0, scale, 1.0f);
-	else if (state == SquareState::Five) Play::DrawSpriteRotated("five", pos, 0, 0, scale, 1.0f);
-	else if (state == SquareState::Six) Play::DrawSpriteRotated("six", pos, 0, 0, scale, 1.0f);
-	else if (state == SquareState::Seven) Play::DrawSpriteRotated("seven", pos, 0, 0, scale, 1.0f);
-	else if (state == SquareState::Eight) Play::DrawSpriteRotated("eight", pos, 0, 0, scale, 1.0f);
-	else if (state == SquareState::Hidden) Play::DrawSpriteRotated("hidden", pos, 0, 0, scale, 1.0f);
+	if (!hidden) {
+		if (mine) Play::DrawSpriteRotated("mine", pos, 0, 0, scale, 1.0f);
+		else if (neighborCount == 0) Play::DrawSpriteRotated("zero", pos, 0, 0, scale, 1.0f);
+		else if (neighborCount == 1) Play::DrawSpriteRotated("one", pos, 0, 0, scale, 1.0f);
+		else if (neighborCount == 2) Play::DrawSpriteRotated("two", pos, 0, 0, scale, 1.0f);
+		else if (neighborCount == 3) Play::DrawSpriteRotated("three", pos, 0, 0, scale, 1.0f);
+		else if (neighborCount == 4) Play::DrawSpriteRotated("four", pos, 0, 0, scale, 1.0f);
+		else if (neighborCount == 5) Play::DrawSpriteRotated("five", pos, 0, 0, scale, 1.0f);
+		else if (neighborCount == 6) Play::DrawSpriteRotated("six", pos, 0, 0, scale, 1.0f);
+		else if (neighborCount == 7) Play::DrawSpriteRotated("seven", pos, 0, 0, scale, 1.0f);
+		else if (neighborCount == 8) Play::DrawSpriteRotated("eight", pos, 0, 0, scale, 1.0f);
+	}
+	else if (flagged) {
+		Play::DrawSpriteRotated("flag", pos, 0, 0, scale, 1.0f);
+	}
+	else {
+		Play::DrawSpriteRotated("hidden", pos, 0, 0, scale, 1.0f);
+	}
 }
 
+// Get/Set Functions
 void Square::SetX(int x) { cX = x; }
 void Square::SetY(int y) { cY = y; }
 int Square::GetX() { return cX; }
@@ -37,35 +45,25 @@ void Square::SetPos(int x, int y) {
 	pos = { x * offset,y * offset};
 }
 Point2D Square::GetPos() { return pos; }
-void Square::SetState(SquareState s) { state = s; }
-SquareState Square::GetState() { return state; }
-void Square::PlantMine() { mine = true; }
+void Square::SetMine(bool b) { mine = b; }
 bool Square::HasMine()  { return mine; }
+void Square::SetFlagged(bool b) { flagged = b; }
+bool Square::GetFlagged() { return flagged;  }
+void Square::SetHidden(bool b) { hidden = b; }
+bool Square::GetHidden() { return hidden; }
 
+// Checks if the player clicks on a square
 void Square::Hover() {
-	if ((pos.x < Play::GetMousePos().x && Play::GetMousePos().x < pos.x + 15) && (pos.y < Play::GetMousePos().y&& Play::GetMousePos().y < pos.y + 15)) {
-		if (Play::KeyPressed(VK_LBUTTON) && state != SquareState::Flag) UpdateSquare();
-		if (Play::KeyPressed(VK_RBUTTON) && (state == SquareState::Hidden || state == SquareState::Flag)) {
-			if (state != SquareState::Flag) {
-				state = SquareState::Flag;
+	if ((pos.x < Play::GetMousePos().x && Play::GetMousePos().x < pos.x + 15) && (pos.y < Play::GetMousePos().y && Play::GetMousePos().y < pos.y + 15)) {	// Is the mouse over the square?
+		if (Play::KeyPressed(VK_LBUTTON) && !flagged) hidden = false;	// Sets hidden to false if the player left-clicks and the square isn't flagged 
+		if (Play::KeyPressed(VK_RBUTTON) && (hidden || flagged)) {	
+			if (!flagged) {
+				flagged = true;		// Sets flagged to true if player right-clicks and the square isn't flagged 
 			}
 			else
 			{
-				state = SquareState::Hidden;
+				flagged = false;	// Sets flagged to false if player right-clicks and the square is flagged 
 			}
 		}
 	}
-}
-
-void Square::UpdateSquare() {
-	if (neighborCount == 0) SetState(SquareState::Zero);
-	if (neighborCount == 1) SetState(SquareState::One);
-	if (neighborCount == 2) SetState(SquareState::Two);
-	if (neighborCount == 3) SetState(SquareState::Three);
-	if (neighborCount == 4) SetState(SquareState::Four);
-	if (neighborCount == 5) SetState(SquareState::Five);
-	if (neighborCount == 6) SetState(SquareState::Six);
-	if (neighborCount == 7) SetState(SquareState::Seven);
-	if (neighborCount == 8) SetState(SquareState::Eight);
-	if (mine) SetState(SquareState::Mine);
 }

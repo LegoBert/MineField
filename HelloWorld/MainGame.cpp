@@ -20,8 +20,9 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 bool MainGameUpdate( float elapsedTime )
 {
 	Play::ClearDrawingBuffer( Play::cBlack );
+
 	grid.Draw();
-	grid.HoverSquare();
+	grid.Hover();
 	grid.ClearSquare();
 
 	Play::PresentDrawingBuffer();
