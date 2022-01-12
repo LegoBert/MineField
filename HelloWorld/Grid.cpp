@@ -21,6 +21,9 @@ Grid::Grid() {
 }
 
 Grid::~Grid() {
+	for (int i = 0; i < gridHeight; ++i) {
+		delete[] minefield[i];
+	}
 	delete[] minefield;
 }
 
