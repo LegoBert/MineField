@@ -9,10 +9,10 @@ Square::Square(){
 	cX = 0;
 	cY = 0;
 	neighborCount = 0;
+	scale = 2;
 }
 
 void Square::Draw() {
-	float scale = 2;
 	if (!hidden) {
 		if (mine) Play::DrawSpriteRotated("mine", pos, 0, 0, scale, 1.0f);
 		else if (neighborCount == 0) Play::DrawSpriteRotated("zero", pos, 0, 0, scale, 1.0f);
@@ -40,13 +40,10 @@ int Square::GetX() { return cX; }
 int Square::GetY() { return cY; }
 void Square::SetNeighborCount(int n) { neighborCount = n; }
 int Square::GetNeighborCount() { return neighborCount; }
-void Square::SetPos(int x, int y) {
-	int offset = 14;
-	pos = { x * offset,y * offset};
-}
+void Square::SetPos(int x, int y) { int offset = 14; pos = { x * offset,y * offset}; }
 Point2D Square::GetPos() { return pos; }
 void Square::SetMine(bool b) { mine = b; }
-bool Square::HasMine()  { return mine; }
+bool Square::HasMine() { return mine; }
 void Square::SetFlagged(bool b) { flagged = b; }
 bool Square::GetFlagged() { return flagged;  }
 void Square::SetHidden(bool b) { hidden = b; }

@@ -42,15 +42,22 @@ int Grid::GetGridHeight() { return gridHeight; }
 
 // Function for planting mines
 void Grid::PlantMines() {
-	int minesLeft = numMines;
+	int minesLeft = numMines;	//The amount of mines left to plant
 	while (minesLeft > 0) {
-		int x = Play::RandomRollRange(0, gridWidth-1);
-		int y = Play::RandomRollRange(0, gridHeight-1);
-		if (minefield[y][x].HasMine() == false) {
-			minefield[y][x].SetMine(true);
+		int x = Play::RandomRollRange(0, gridWidth-1);	//Random x pos
+		int y = Play::RandomRollRange(0, gridHeight-1);	//Random y pos
+		if (minefield[y][x].HasMine() == false) {		//Is it a mine? If not plant a mine!
+			//minefield[y][x].SetMine(true);	//old code
+			Mine* m = new Mine();
+			Square s = *m;	//Polymorphism Mine to Square
+			minefield[y][x] = s;
+			minefield[y][x].SetX(x);
+			minefield[y][x].SetY(y);
+			minefield[y][x].SetPos(x, y);
 			minesLeft--;
 		}
 	}
+
 	AssignNumbers();	// Adding the adjacent mine count while I'm at it
 }
 
@@ -82,8 +89,22 @@ void Grid::Hover() {
 	for (int x = 0; x < gridWidth; x++) {
 		for (int y = 0; y < gridHeight; y++) {
 			minefield[y][x].Hover();
+			if (minefield[y][x].HasMine() && !minefield[y][x].GetHidden()) {
+
+			}
 		}
 	}
+}
+
+bool Grid::Lose() {
+	for (int x = 0; x < gridWidth; x++) {
+		for (int y = 0; y < gridHeight; y++) {
+			if (minefield[y][x].HasMine() && !minefield[y][x].GetHidden()) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 // This function clears the squares around a clear square
@@ -92,8 +113,8 @@ void Grid::ClearSquare() {
 	{
 		for (int y = 0; y < gridHeight; y++)
 		{
-			Square mine = minefield[y][x];
-			if (mine.GetNeighborCount() == 0 && !mine.GetHidden()) {
+			Square s = minefield[y][x];
+			if (s.GetNeighborCount() == 0 && !s.GetHidden()) {
 				for (int cordX = x  - 1; cordX <= x + 1; cordX++) {
 					for (int cordY = y - 1; cordY <= y + 1; cordY++) {
 						if(!(cordX < 0 || cordY < 0 || cordX >= gridWidth || cordY >= gridHeight)) {

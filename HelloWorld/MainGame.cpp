@@ -2,8 +2,11 @@
 #define PLAY_USING_GAMEOBJECT_MANAGER
 #include "Play.h"
 #include "Grid.h"
+#include "Mine.h"
+#include "Square.h"
 
 Grid grid;
+bool lost = false;
 
 int DISPLAY_WIDTH = grid.GetGridWidth()*14;
 int DISPLAY_HEIGHT = grid.GetGridHeight() * 14;
@@ -14,16 +17,21 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 {
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
 	grid.PlantMines();
+	//Play::PlayAudio("music");
 }
 
 // Called by PlayBuffer every frame (60 times a second!)
 bool MainGameUpdate( float elapsedTime )
 {
 	Play::ClearDrawingBuffer( Play::cBlack );
-
-	grid.Draw();
 	grid.Hover();
 	grid.ClearSquare();
+	lost = grid.Lose();
+	grid.Draw();;
+	if (lost) {
+		Play::DrawRect({ 0, DISPLAY_HEIGHT / 2 - 10}, { DISPLAY_WIDTH, DISPLAY_HEIGHT / 2 + 10}, Play::cBlack, true);
+		Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "You lose!", Play::cWhite, true);
+	}
 
 	Play::PresentDrawingBuffer();
 	return Play::KeyDown( VK_ESCAPE );
