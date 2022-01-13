@@ -2,7 +2,7 @@
 #include "Grid.h"
 
 Grid::Grid() {
-	numMines = 1;
+	numMines = 40;
 	clearSquares = 0;
 	firstClick = true;
 
