@@ -2,7 +2,7 @@
 #include "Grid.h"
 
 Grid::Grid() {
-	numMines = 50;
+	numMines = 1;
 	clearSquares = 0;
 	firstClick = true;
 
@@ -104,6 +104,18 @@ bool Grid::Lose() {
 			}
 		}
 	}
+	return false;
+}
+bool Grid::Win() {
+	int count = 0;
+	for (int x = 0; x < gridWidth; x++) {
+		for (int y = 0; y < gridHeight; y++) {
+			if (!minefield[y][x].HasMine() && !minefield[y][x].GetHidden()) {
+				count++;
+			}
+		}
+	}
+	if (gridHeight * gridWidth - numMines == count) return true;
 	return false;
 }
 

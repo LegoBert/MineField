@@ -9,7 +9,7 @@ using namespace std;
 
 class Grid{
 private:
-	int gridWidth = 18;
+	int gridWidth = 25;
 	int gridHeight = 18;
 	Square** minefield;
 
@@ -28,4 +28,5 @@ public:
 	void Hover();
 	void ClearSquare();
 	bool Lose();
+	bool Win();
 };

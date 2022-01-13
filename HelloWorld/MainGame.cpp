@@ -7,6 +7,7 @@
 
 Grid grid;
 bool lost = false;
+bool win = false;
 
 int DISPLAY_WIDTH = grid.GetGridWidth()*14;
 int DISPLAY_HEIGHT = grid.GetGridHeight() * 14;
@@ -24,11 +25,17 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 bool MainGameUpdate( float elapsedTime )
 {
 	Play::ClearDrawingBuffer( Play::cBlack );
-	grid.Hover();
+	if(!lost && !win) grid.Hover();
 	grid.ClearSquare();
+	grid.Draw();
+
 	lost = grid.Lose();
-	grid.Draw();;
-	if (lost) {
+	win = grid.Win();
+	if (win) {
+		Play::DrawRect({ 0, DISPLAY_HEIGHT / 2 - 10 }, { DISPLAY_WIDTH, DISPLAY_HEIGHT / 2 + 10 }, Play::cBlack, true);
+		Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "You Win!", Play::cWhite, true);
+	}
+	else if (lost) {
 		Play::DrawRect({ 0, DISPLAY_HEIGHT / 2 - 10}, { DISPLAY_WIDTH, DISPLAY_HEIGHT / 2 + 10}, Play::cBlack, true);
 		Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "You lose!", Play::cWhite, true);
 	}
