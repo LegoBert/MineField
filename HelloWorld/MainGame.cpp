@@ -39,6 +39,11 @@ bool MainGameUpdate( float elapsedTime )
 		Play::DrawRect({ 0, DISPLAY_HEIGHT / 2 - 10}, { DISPLAY_WIDTH, DISPLAY_HEIGHT / 2 + 10}, Play::cBlack, true);
 		Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "You lose!", Play::cWhite, true);
 	}
+	if (Play::KeyPressed(0x52)) {
+		grid.restart();
+		lost = false;
+		win = false;
+	}
 
 	Play::PresentDrawingBuffer();
 	return Play::KeyDown( VK_ESCAPE );

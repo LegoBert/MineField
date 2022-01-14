@@ -139,6 +139,25 @@ void Grid::ClearSquare() {
 	}
 }
 
+void Grid::restart() {
+	for (int i = 0; i < gridHeight; ++i) {
+		delete[] minefield[i];
+	}
+	delete[] minefield;
+	minefield = new Square * [gridHeight];
+	for (int i = 0; i < gridHeight; ++i) {
+		minefield[i] = new Square[gridWidth];
+	}
 
+	for (int x = 0; x < gridWidth; x++) {
+		for (int y = 0; y < gridHeight; y++) {
+			minefield[y][x].SetX(x);
+			minefield[y][x].SetY(y);
+			minefield[y][x].SetPos(x, y);
+		}
+	}
+
+	PlantMines();
+}
 
 

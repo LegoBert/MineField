@@ -29,4 +29,5 @@ public:
 	void ClearSquare();
 	bool Lose();
 	bool Win();
+	void restart();
 };
