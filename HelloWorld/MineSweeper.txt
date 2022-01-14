@@ -1,0 +1,9 @@
+How to play:
+My Sweeper is about clearing the playing field of mines. To win, all squares that don't have mines must be visible, if you click on a mine you lose.
+Squares that don't have mines have a number showing the amount of adjecent mines. You also have access to flags that you can use to mark where you think there is a mine, 
+it also prevents you from activating it by mistake.
+
+Left-Click on a square to show it.
+and Right-Click on a square to flag or unflag it.
+
+Warning! I haven't fixed so the first click isen't on or next to a mine, so you might need to restart until you get a good start. Sorry!
