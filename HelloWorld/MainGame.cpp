@@ -9,7 +9,7 @@ Grid grid;
 bool lost = false;
 bool win = false;
 
-int DISPLAY_WIDTH = grid.GetGridWidth()*14;
+int DISPLAY_WIDTH = grid.GetGridWidth() * 14;
 int DISPLAY_HEIGHT = grid.GetGridHeight() * 14;
 int DISPLAY_SCALE = 2.5;
 
